@@ -1,0 +1,43 @@
+# Gradle Build & Output
+.gradle/
+**/build/
+**/out/
+**/bin/
+.gradletasknamecache
+
+# IDE & Editors (IntelliJ IDEA, VS Code)
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+ehthumbs.db
+Thumbs.db
+
+# Secrets & Environment
+.env
+*.pem
+*.key
+*.p12
+
+# Logs & Temporary Files
+*.log
+*.tmp
+*.swp
+
+# Executables & Archives
+*.jar
+*.war
+*.rar
+*.ear
+!gradle/wrapper/gradle-wrapper.jar
+
+# MacOS
+.DS_Store
