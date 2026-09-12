@@ -20,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -68,6 +70,18 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
         User updatedUser = userMapper.updateRequestToEntity(userUpdateRequest, existingUser);
         User savedUser = userRepository.save(updatedUser);
+        return userMapper.entityToDetailResponse(savedUser);
+    }
+
+    @Override
+    public UserDetailResponse deleteUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+        user.setStatus(Status.DELETED);
+        user.setDeletedAt(Instant.now());
+        user.setEmail(user.getEmail() + "_deleted");
+        user.setPhoneNumber(user.getPhoneNumber() + "_deleted");
+        User savedUser = userRepository.save(user);
         return userMapper.entityToDetailResponse(savedUser);
     }
 }

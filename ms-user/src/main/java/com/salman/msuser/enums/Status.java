@@ -5,6 +5,7 @@ import com.salman.msuser.exception.custom.BadRequestException;
 public enum Status {
     ACTIVE,
     BLOCKED,
+    DELETED,
     INACTIVE;
 
     public static Status fromString(String status) {

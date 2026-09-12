@@ -50,4 +50,11 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .body(userService.updateUserById(id, userUpdateRequest));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserDetailResponse> deleteUserById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.deleteUserById(id));
+    }
 }
