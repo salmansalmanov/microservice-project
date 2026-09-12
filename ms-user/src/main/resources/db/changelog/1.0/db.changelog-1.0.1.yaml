@@ -1,0 +1,18 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.1-modify-primary-key-users-table
+      author: salmansalmanov
+      changes:
+        - dropColumn:
+            tableName: users
+            columnName: id
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
