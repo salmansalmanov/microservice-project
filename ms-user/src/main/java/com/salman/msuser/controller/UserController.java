@@ -35,4 +35,11 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .body(userService.getAllUsers(page, size, status));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDetailResponse> getUserById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.getUserById(id));
+    }
 }

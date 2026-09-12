@@ -7,6 +7,7 @@ import com.salman.msuser.dto.response.UserSummaryResponse;
 import com.salman.msuser.entity.User;
 import com.salman.msuser.enums.Status;
 import com.salman.msuser.exception.custom.AlreadyExistsException;
+import com.salman.msuser.exception.custom.NotFoundException;
 import com.salman.msuser.mapper.UserMapper;
 import com.salman.msuser.repository.UserRepository;
 import com.salman.msuser.service.abstraction.UserService;
@@ -43,5 +44,12 @@ public class UserServiceImpl implements UserService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<User> userPage = status == null ? userRepository.findAll(pageable) : userRepository.findAllByStatus(status, pageable);
         return PageResponse.of(userPage.map(userMapper::entityToSummaryResponse));
+    }
+
+    @Override
+    public UserDetailResponse getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+        return userMapper.entityToDetailResponse(user);
     }
 }
