@@ -1,6 +1,7 @@
 package com.salman.msuser.controller;
 
 import com.salman.msuser.dto.request.UserCreateRequest;
+import com.salman.msuser.dto.request.UserUpdateRequest;
 import com.salman.msuser.dto.response.PageResponse;
 import com.salman.msuser.dto.response.UserDetailResponse;
 import com.salman.msuser.dto.response.UserSummaryResponse;
@@ -41,5 +42,12 @@ public class UserController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.getUserById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDetailResponse> updateUserById(@PathVariable Long id, @RequestBody @Valid UserUpdateRequest userUpdateRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(userService.updateUserById(id, userUpdateRequest));
     }
 }
