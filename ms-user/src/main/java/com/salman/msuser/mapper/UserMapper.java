@@ -2,6 +2,7 @@ package com.salman.msuser.mapper;
 
 import com.salman.msuser.dto.request.UserCreateRequest;
 import com.salman.msuser.dto.response.UserDetailResponse;
+import com.salman.msuser.dto.response.UserSummaryResponse;
 import com.salman.msuser.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,4 +14,6 @@ public interface UserMapper {
     User createRequestToEntity(UserCreateRequest userCreateRequest);
 
     UserDetailResponse entityToDetailResponse(User user);
+
+    UserSummaryResponse entityToSummaryResponse(User user);
 }
