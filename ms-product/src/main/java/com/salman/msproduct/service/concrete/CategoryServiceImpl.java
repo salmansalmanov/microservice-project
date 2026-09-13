@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
@@ -58,6 +60,16 @@ public class CategoryServiceImpl implements CategoryService {
                 .orElseThrow(() -> new NotFoundException("Category not found"));
         Category updatedCategory = categoryMapper.updateRequestToEntity(categoryUpdateRequest, existingCategory);
         Category savedCategory = categoryRepository.save(updatedCategory);
+        return categoryMapper.entityToDetailResponse(savedCategory);
+    }
+
+    @Override
+    public CategoryDetailResponse deleteCategoryById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Category not found"));
+        category.setName(category.getName() + "_deleted_" + System.currentTimeMillis());
+        category.setDeletedAt(Instant.now());
+        Category savedCategory = categoryRepository.save(category);
         return categoryMapper.entityToDetailResponse(savedCategory);
     }
 }

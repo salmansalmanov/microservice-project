@@ -42,9 +42,16 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDetailResponse> updateCategory(@PathVariable Long id, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
+    public ResponseEntity<CategoryDetailResponse> updateCategoryById(@PathVariable Long id, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.updateCategoryById(id, categoryUpdateRequest));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CategoryDetailResponse> deleteCategoryById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.deleteCategoryById(id));
     }
 }
