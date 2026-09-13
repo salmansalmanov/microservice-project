@@ -4,7 +4,8 @@ import com.salman.msproduct.dto.request.CategoryCreateRequest;
 import com.salman.msproduct.dto.response.CategoryDetailResponse;
 import com.salman.msproduct.dto.response.PageResponse;
 import com.salman.msproduct.entity.Category;
-import com.salman.msproduct.exception.AlreadyExistsException;
+import com.salman.msproduct.exception.custom.AlreadyExistsException;
+import com.salman.msproduct.exception.custom.NotFoundException;
 import com.salman.msproduct.mapper.CategoryMapper;
 import com.salman.msproduct.repository.CategoryRepository;
 import com.salman.msproduct.service.abstraction.CategoryService;
@@ -37,5 +38,12 @@ public class CategoryServiceImpl implements CategoryService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
         return PageResponse.of(categoryPage.map(categoryMapper::entityToDetailResponse));
+    }
+
+    @Override
+    public CategoryDetailResponse getCategoryById(Long id) {
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Category not found"));
+        return categoryMapper.entityToDetailResponse(category);
     }
 }

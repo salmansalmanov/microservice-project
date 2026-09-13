@@ -32,4 +32,11 @@ public class CategoryController {
                 .status(HttpStatus.OK)
                 .body(categoryService.getAllCategories(page, size));
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoryDetailResponse> getCategoryById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.getCategoryById(id));
+    }
 }

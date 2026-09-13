@@ -8,4 +8,6 @@ public interface CategoryService {
     CategoryDetailResponse createCategory(CategoryCreateRequest categoryCreateRequest);
 
     PageResponse<CategoryDetailResponse> getAllCategories(int page, int size);
+
+    CategoryDetailResponse getCategoryById(Long id);
 }
