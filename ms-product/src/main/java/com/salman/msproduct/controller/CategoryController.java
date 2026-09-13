@@ -1,6 +1,7 @@
 package com.salman.msproduct.controller;
 
 import com.salman.msproduct.dto.request.CategoryCreateRequest;
+import com.salman.msproduct.dto.request.CategoryUpdateRequest;
 import com.salman.msproduct.dto.response.CategoryDetailResponse;
 import com.salman.msproduct.dto.response.PageResponse;
 import com.salman.msproduct.service.abstraction.CategoryService;
@@ -38,5 +39,12 @@ public class CategoryController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.getCategoryById(id));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryDetailResponse> updateCategory(@PathVariable Long id, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.updateCategoryById(id, categoryUpdateRequest));
     }
 }

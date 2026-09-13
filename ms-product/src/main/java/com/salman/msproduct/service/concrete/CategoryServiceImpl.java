@@ -1,6 +1,7 @@
 package com.salman.msproduct.service.concrete;
 
 import com.salman.msproduct.dto.request.CategoryCreateRequest;
+import com.salman.msproduct.dto.request.CategoryUpdateRequest;
 import com.salman.msproduct.dto.response.CategoryDetailResponse;
 import com.salman.msproduct.dto.response.PageResponse;
 import com.salman.msproduct.entity.Category;
@@ -45,5 +46,18 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Category not found"));
         return categoryMapper.entityToDetailResponse(category);
+    }
+
+    @Override
+    public CategoryDetailResponse updateCategoryById(Long id, CategoryUpdateRequest categoryUpdateRequest) {
+        if (categoryRepository.existsByName(categoryUpdateRequest.name())) {
+            throw new AlreadyExistsException("Category already exists");
+        }
+
+        Category existingCategory = categoryRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Category not found"));
+        Category updatedCategory = categoryMapper.updateRequestToEntity(categoryUpdateRequest, existingCategory);
+        Category savedCategory = categoryRepository.save(updatedCategory);
+        return categoryMapper.entityToDetailResponse(savedCategory);
     }
 }
