@@ -2,15 +2,13 @@ package com.salman.msproduct.controller;
 
 import com.salman.msproduct.dto.request.CategoryCreateRequest;
 import com.salman.msproduct.dto.response.CategoryDetailResponse;
+import com.salman.msproduct.dto.response.PageResponse;
 import com.salman.msproduct.service.abstraction.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +21,15 @@ public class CategoryController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(categoryService.createCategory(categoryCreateRequest));
+    }
+
+    @GetMapping
+    public ResponseEntity<PageResponse<CategoryDetailResponse>> getAllCategories(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(categoryService.getAllCategories(page, size));
     }
 }
