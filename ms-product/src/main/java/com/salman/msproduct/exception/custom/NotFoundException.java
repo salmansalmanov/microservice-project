@@ -1,7 +1,14 @@
 package com.salman.msproduct.exception.custom;
 
+import com.salman.msproduct.enums.ErrorCode;
+import lombok.Getter;
+
+@Getter
 public class NotFoundException extends RuntimeException {
-    public NotFoundException(String message) {
+    private final ErrorCode code;
+
+    public NotFoundException(String message, ErrorCode code) {
         super(message);
+        this.code = code;
     }
 }
