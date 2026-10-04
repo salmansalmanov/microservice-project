@@ -5,7 +5,6 @@ import com.salman.msuser.dto.request.UserUpdateRequest;
 import com.salman.msuser.dto.response.PageResponse;
 import com.salman.msuser.dto.response.UserDetailResponse;
 import com.salman.msuser.dto.response.UserSummaryResponse;
-import com.salman.msuser.enums.Status;
 import com.salman.msuser.service.abstraction.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

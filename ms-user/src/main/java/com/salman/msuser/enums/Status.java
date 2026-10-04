@@ -12,10 +12,11 @@ public enum Status {
         if (status == null || status.isEmpty()) {
             return null;
         }
+
         try {
             return Status.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new BadRequestException("Invalid status value: " + status);
+            throw new BadRequestException(ErrorCode.INVALID_STATUS_VALUE.getMessage() + ": " + status, ErrorCode.INVALID_STATUS_VALUE);
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.salman.msuser.exception.handler;
 
 import com.salman.msuser.dto.response.ErrorResponse;
+import com.salman.msuser.enums.ErrorCode;
 import com.salman.msuser.exception.custom.AlreadyExistsException;
 import com.salman.msuser.exception.custom.BadRequestException;
 import com.salman.msuser.exception.custom.NotFoundException;
@@ -21,21 +22,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse<Void>> handleAlreadyExistsException(AlreadyExistsException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.of("ALREADY_EXISTS", ex.getMessage()));
+                .body(ErrorResponse.of(ex.getCode(), ex.getMessage()));
     }
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse<Void>> handleBadRequestException(BadRequestException ex) {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.of("BAD_REQUEST", ex.getMessage()));
+                .body(ErrorResponse.of(ex.getCode(), ex.getMessage()));
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse<Void>> handleNotFoundException(NotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(ErrorResponse.of("NOT_FOUND", ex.getMessage()));
+                .body(ErrorResponse.of(ex.getCode(), ex.getMessage()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -46,13 +47,13 @@ public class GlobalExceptionHandler {
         }
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.of("VALIDATION_FAILED", "Validation failed", errors));
+                .body(ErrorResponse.of(ErrorCode.VALIDATION_FAILED, ErrorCode.VALIDATION_FAILED.getMessage(), errors));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse<Void>> handleException(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ErrorResponse.of("INTERNAL_SERVER_ERROR", "An unexpected error occured"));
+                .body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, ErrorCode.INTERNAL_SERVER_ERROR.getMessage()));
     }
 }

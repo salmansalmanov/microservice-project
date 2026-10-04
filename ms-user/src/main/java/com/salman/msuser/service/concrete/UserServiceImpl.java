@@ -6,9 +6,9 @@ import com.salman.msuser.dto.response.PageResponse;
 import com.salman.msuser.dto.response.UserDetailResponse;
 import com.salman.msuser.dto.response.UserSummaryResponse;
 import com.salman.msuser.entity.User;
+import com.salman.msuser.enums.ErrorCode;
 import com.salman.msuser.enums.Status;
 import com.salman.msuser.exception.custom.AlreadyExistsException;
-import com.salman.msuser.exception.custom.BadRequestException;
 import com.salman.msuser.exception.custom.NotFoundException;
 import com.salman.msuser.mapper.UserMapper;
 import com.salman.msuser.repository.UserRepository;
@@ -31,10 +31,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetailResponse createUser(UserCreateRequest userCreateRequest) {
         if (userRepository.existsByEmail(userCreateRequest.email())) {
-            throw new AlreadyExistsException("Email already exists");
+            throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS.getMessage(),ErrorCode.EMAIL_ALREADY_EXISTS);
         }
         if (userRepository.existsByPhoneNumber(userCreateRequest.phoneNumber())) {
-            throw new AlreadyExistsException("Phone number already exists");
+            throw new AlreadyExistsException(ErrorCode.PHONE_NUMBER_ALREADY_EXISTS.getMessage(), ErrorCode.PHONE_NUMBER_ALREADY_EXISTS);
         }
 
         User user = userMapper.createRequestToEntity(userCreateRequest);
@@ -53,21 +53,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetailResponse getUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND.getMessage() + ": " + id, ErrorCode.USER_NOT_FOUND));
         return userMapper.entityToDetailResponse(user);
     }
 
     @Override
     public UserDetailResponse updateUserById(Long id, UserUpdateRequest userUpdateRequest) {
         if (userRepository.existsByEmail(userUpdateRequest.email())) {
-            throw new BadRequestException("Email already exists");
+            throw new AlreadyExistsException(ErrorCode.EMAIL_ALREADY_EXISTS.getMessage(),ErrorCode.EMAIL_ALREADY_EXISTS);
         }
         if (userRepository.existsByPhoneNumber(userUpdateRequest.phoneNumber())) {
-            throw new BadRequestException("Phone number already exists");
+            throw new AlreadyExistsException(ErrorCode.PHONE_NUMBER_ALREADY_EXISTS.getMessage(), ErrorCode.PHONE_NUMBER_ALREADY_EXISTS);
         }
 
         User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND.getMessage() + ": " + id, ErrorCode.USER_NOT_FOUND));
         User updatedUser = userMapper.updateRequestToEntity(userUpdateRequest, existingUser);
         User savedUser = userRepository.save(updatedUser);
         return userMapper.entityToDetailResponse(savedUser);
@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetailResponse deleteUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException(ErrorCode.USER_NOT_FOUND.getMessage() + ": " + id, ErrorCode.USER_NOT_FOUND));
         user.setStatus(Status.DELETED);
         user.setDeletedAt(Instant.now());
         user.setEmail(user.getEmail() + "_deleted");
