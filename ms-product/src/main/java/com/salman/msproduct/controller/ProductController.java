@@ -1,6 +1,7 @@
 package com.salman.msproduct.controller;
 
 import com.salman.msproduct.dto.request.ProductCreateRequest;
+import com.salman.msproduct.dto.request.ProductUpdateRequest;
 import com.salman.msproduct.dto.response.PageResponse;
 import com.salman.msproduct.dto.response.ProductDetailResponse;
 import com.salman.msproduct.dto.response.ProductResponse;
@@ -39,5 +40,12 @@ public class ProductController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.getAllProducts(page, size));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDetailResponse> updateProductById(@PathVariable Long id, @RequestBody @Valid ProductUpdateRequest productUpdateRequest) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.updateProductById(id, productUpdateRequest));
     }
 }

@@ -1,6 +1,7 @@
 package com.salman.msproduct.service.concrete;
 
 import com.salman.msproduct.dto.request.ProductCreateRequest;
+import com.salman.msproduct.dto.request.ProductUpdateRequest;
 import com.salman.msproduct.dto.response.PageResponse;
 import com.salman.msproduct.dto.response.ProductDetailResponse;
 import com.salman.msproduct.dto.response.ProductResponse;
@@ -48,5 +49,14 @@ public class ProductServiceImpl implements ProductService {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<Product> productPage = productRepository.findAll(pageable);
         return PageResponse.of(productPage.map(productMapper::toResponse));
+    }
+
+    @Override
+    public ProductDetailResponse updateProductById(Long id, ProductUpdateRequest productUpdateRequest) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND.getMessage(), ErrorCode.PRODUCT_NOT_FOUND));
+        Product updatedProduct = productMapper.updateRequestToEntity(productUpdateRequest, product);
+        Product savedProduct = productRepository.save(updatedProduct);
+        return productMapper.toDetailResponse(savedProduct);
     }
 }

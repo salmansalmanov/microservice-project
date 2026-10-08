@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
-public record CategoryCreateRequest(
+public record ProductUpdateRequest(
         @NotBlank(message = "Name is required")
         String name,
 
@@ -22,9 +22,6 @@ public record CategoryCreateRequest(
 
         @NotNull(message = "Stock quantity is required")
         @Positive(message = "Stock quantity must be positive")
-        Integer stockQuantity,
-
-        @NotNull(message = "Category is required")
-        Long categoryId
+        Integer stockQuantity
 ) {
 }
