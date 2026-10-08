@@ -2,7 +2,7 @@ package com.salman.msproduct.controller;
 
 import com.salman.msproduct.dto.request.CategoryCreateRequest;
 import com.salman.msproduct.dto.request.CategoryUpdateRequest;
-import com.salman.msproduct.dto.response.CategoryDetailResponse;
+import com.salman.msproduct.dto.response.CategoryResponse;
 import com.salman.msproduct.dto.response.PageResponse;
 import com.salman.msproduct.service.abstraction.CategoryService;
 import jakarta.validation.Valid;
@@ -18,14 +18,14 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @PostMapping
-    public ResponseEntity<CategoryDetailResponse> createCategory(@RequestBody @Valid CategoryCreateRequest categoryCreateRequest) {
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody @Valid CategoryCreateRequest categoryCreateRequest) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(categoryService.createCategory(categoryCreateRequest));
     }
 
     @GetMapping
-    public ResponseEntity<PageResponse<CategoryDetailResponse>> getAllCategories(
+    public ResponseEntity<PageResponse<CategoryResponse>> getAllCategories(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -35,21 +35,21 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDetailResponse> getCategoryById(@PathVariable Long id) {
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.getCategoryById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CategoryDetailResponse> updateCategoryById(@PathVariable Long id, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
+    public ResponseEntity<CategoryResponse> updateCategoryById(@PathVariable Long id, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.updateCategoryById(id, categoryUpdateRequest));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CategoryDetailResponse> deleteCategoryById(@PathVariable Long id) {
+    public ResponseEntity<CategoryResponse> deleteCategoryById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.deleteCategoryById(id));

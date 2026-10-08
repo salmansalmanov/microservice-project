@@ -1,6 +1,6 @@
 package com.salman.msproduct.dto.response;
 
-public record CategoryDetailResponse(
+public record CategoryResponse(
         Long id,
         String name
 ) {

@@ -1,0 +1,32 @@
+package com.salman.msproduct.service.concrete;
+
+import com.salman.msproduct.dto.request.ProductCreateRequest;
+import com.salman.msproduct.dto.response.ProductDetailResponse;
+import com.salman.msproduct.entity.Category;
+import com.salman.msproduct.entity.Product;
+import com.salman.msproduct.enums.ErrorCode;
+import com.salman.msproduct.exception.custom.NotFoundException;
+import com.salman.msproduct.mapper.ProductMapper;
+import com.salman.msproduct.repository.CategoryRepository;
+import com.salman.msproduct.repository.ProductRepository;
+import com.salman.msproduct.service.abstraction.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class ProductServiceImpl implements ProductService {
+    private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
+    private final CategoryRepository categoryRepository;
+
+    @Override
+    public ProductDetailResponse createProduct(ProductCreateRequest productCreateRequest) {
+        Category category = categoryRepository.findById(productCreateRequest.categoryId())
+                .orElseThrow(() -> new NotFoundException(ErrorCode.CATEGORY_NOT_FOUND.getMessage(), ErrorCode.CATEGORY_NOT_FOUND));
+        Product product = productMapper.createRequestToEntity(productCreateRequest);
+        product.setCategory(category);
+        Product savedProduct = productRepository.save(product);
+        return productMapper.toDetailResponse(savedProduct);
+    }
+}

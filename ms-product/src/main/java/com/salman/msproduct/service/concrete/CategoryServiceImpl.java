@@ -2,7 +2,7 @@ package com.salman.msproduct.service.concrete;
 
 import com.salman.msproduct.dto.request.CategoryCreateRequest;
 import com.salman.msproduct.dto.request.CategoryUpdateRequest;
-import com.salman.msproduct.dto.response.CategoryDetailResponse;
+import com.salman.msproduct.dto.response.CategoryResponse;
 import com.salman.msproduct.dto.response.PageResponse;
 import com.salman.msproduct.entity.Category;
 import com.salman.msproduct.enums.ErrorCode;
@@ -27,7 +27,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
-    public CategoryDetailResponse createCategory(CategoryCreateRequest categoryCreateRequest) {
+    public CategoryResponse createCategory(CategoryCreateRequest categoryCreateRequest) {
         if (categoryRepository.existsByName(categoryCreateRequest.name())) {
             throw new AlreadyExistsException(ErrorCode.CATEGORY_ALREADY_EXISTS.getMessage(), ErrorCode.CATEGORY_ALREADY_EXISTS);
         }
@@ -38,21 +38,21 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PageResponse<CategoryDetailResponse> getAllCategories(int page, int size) {
+    public PageResponse<CategoryResponse> getAllCategories(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
         Page<Category> categoryPage = categoryRepository.findAll(pageable);
         return PageResponse.of(categoryPage.map(categoryMapper::entityToDetailResponse));
     }
 
     @Override
-    public CategoryDetailResponse getCategoryById(Long id) {
+    public CategoryResponse getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CATEGORY_NOT_FOUND.getMessage(), ErrorCode.CATEGORY_NOT_FOUND));
         return categoryMapper.entityToDetailResponse(category);
     }
 
     @Override
-    public CategoryDetailResponse updateCategoryById(Long id, CategoryUpdateRequest categoryUpdateRequest) {
+    public CategoryResponse updateCategoryById(Long id, CategoryUpdateRequest categoryUpdateRequest) {
         if (categoryRepository.existsByName(categoryUpdateRequest.name())) {
             throw new AlreadyExistsException(ErrorCode.CATEGORY_ALREADY_EXISTS.getMessage(), ErrorCode.CATEGORY_ALREADY_EXISTS);
         }
@@ -65,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryDetailResponse deleteCategoryById(Long id) {
+    public CategoryResponse deleteCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(ErrorCode.CATEGORY_NOT_FOUND.getMessage(), ErrorCode.CATEGORY_NOT_FOUND));
         category.setName(category.getName() + "_deleted_" + System.currentTimeMillis());
