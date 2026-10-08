@@ -29,4 +29,11 @@ public class ProductServiceImpl implements ProductService {
         Product savedProduct = productRepository.save(product);
         return productMapper.toDetailResponse(savedProduct);
     }
+
+    @Override
+    public ProductDetailResponse getProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND.getMessage(), ErrorCode.PRODUCT_NOT_FOUND));
+        return productMapper.toDetailResponse(product);
+    }
 }

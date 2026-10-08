@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     CATEGORY_ALREADY_EXISTS("Category already exists"),
-    CATEGORY_NOT_FOUND("Category not found"),;
+    CATEGORY_NOT_FOUND("Category not found"),
+    PRODUCT_NOT_FOUND("Product not found");
 
     private final String message;
 
