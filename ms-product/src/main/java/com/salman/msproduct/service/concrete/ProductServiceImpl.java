@@ -8,6 +8,7 @@ import com.salman.msproduct.dto.response.ProductResponse;
 import com.salman.msproduct.entity.Category;
 import com.salman.msproduct.entity.Product;
 import com.salman.msproduct.enums.ErrorCode;
+import com.salman.msproduct.enums.ProductStatus;
 import com.salman.msproduct.exception.custom.NotFoundException;
 import com.salman.msproduct.mapper.ProductMapper;
 import com.salman.msproduct.repository.CategoryRepository;
@@ -57,6 +58,15 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND.getMessage(), ErrorCode.PRODUCT_NOT_FOUND));
         Product updatedProduct = productMapper.updateRequestToEntity(productUpdateRequest, product);
         Product savedProduct = productRepository.save(updatedProduct);
+        return productMapper.toDetailResponse(savedProduct);
+    }
+
+    @Override
+    public ProductDetailResponse deleteProductById(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(ErrorCode.PRODUCT_NOT_FOUND.getMessage(), ErrorCode.PRODUCT_NOT_FOUND));
+        product.setStatus(ProductStatus.DELETED);
+        Product savedProduct = productRepository.save(product);
         return productMapper.toDetailResponse(savedProduct);
     }
 }
